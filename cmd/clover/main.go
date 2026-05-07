@@ -13,7 +13,6 @@ func main() {
 	output := flag.String("o", "", "Path to the download directory (Default: ~/Downloads)")
 
 	flag.Usage = func() {
-		fmt.Fprintf(os.Stderr, "clover is a lightweight, fast leech only torrent client.\n")
 		fmt.Fprintf(os.Stderr, "Usage: clover -i <torrentfile> -o <outputdir>\n\n")
 		fmt.Fprintf(os.Stderr, "Options:\n")
 		flag.PrintDefaults()
