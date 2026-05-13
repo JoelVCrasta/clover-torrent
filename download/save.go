@@ -17,11 +17,7 @@ type PieceWriter struct {
 
 func NewPieceWriter(torrent metainfo.Torrent) (*PieceWriter, error) {
 	var basePath string
-	if torrent.OutputPath != "" {
-		basePath = torrent.OutputPath
-	} else {
-		basePath = config.Config.DownloadDirectory
-	}
+	basePath = GetOutputBasePath(torrent)
 
 	pw := &PieceWriter{
 		torrent:  torrent,
@@ -29,7 +25,7 @@ func NewPieceWriter(torrent metainfo.Torrent) (*PieceWriter, error) {
 		basePath: basePath,
 	}
 
-	root := filepath.Join(basePath, torrent.Info.Name)
+	root := GetOutputRootPath(torrent)
 
 	cleanup := func() {
 		pw.CloseWriter()
@@ -150,4 +146,16 @@ func (pw *PieceWriter) CloseWriter() {
 	for _, file := range pw.files {
 		_ = file.Close()
 	}
+}
+
+func GetOutputBasePath(torrent metainfo.Torrent) string {
+	if torrent.OutputPath != "" {
+		return torrent.OutputPath
+	} else {
+		return config.Config.DownloadDirectory
+	}
+}
+
+func GetOutputRootPath(torrent metainfo.Torrent) string {
+	return filepath.Join(GetOutputBasePath(torrent), torrent.Info.Name)
 }
