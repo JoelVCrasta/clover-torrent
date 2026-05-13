@@ -19,6 +19,8 @@ type Torrent struct {
 	PiecesHash   [][20]byte
 	IsMultiFile  bool
 	OutputPath   string
+
+	BencodeByteStream []byte
 }
 
 type Info struct {
@@ -47,6 +49,7 @@ func (t *Torrent) Torrent(filePath string, outputPath string) error {
 		return fmt.Errorf("[torrent] %v", err)
 	}
 
+	t.BencodeByteStream = bencodeByteStream
 	t.OutputPath = outputPath
 	return nil
 }
